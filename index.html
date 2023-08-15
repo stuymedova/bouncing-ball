@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Ping-pong</title>
+
+	<style>
+		@font-face {
+			font-family: MG;
+			src:
+				url(./fonts/ABCMonumentGrotesk-Regular-Trial.otf) format('otf'),
+				url(./fonts/ABCMonumentGrotesk-Regular-Trial.woff2) format('woff2');
+		}
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			overflow: hidden;
+			font-family: MG, Helvetica, sans-serif;
+		}
+
+		.title {
+			position: absolute;
+			font-size: 76px;
+			top: 10px;
+			left: 10px;
+			z-index: 10;
+			line-height: 0.8;
+			letter-spacing: -0.1rem;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="100%"></canvas>
+	<p class="title">Ping-</p>
+	<p class="title" style="margin-top: 60px; margin-left: 180px;">pong</p>
+
+	<script>
+		const w = window.innerWidth;
+		const h = window.innerHeight;
+
+		const diff = 12;
+		const ball = {
+			x: Math.trunc(w / 2),
+			y: Math.trunc(h / 2),
+			r: 60,
+			dx: diff,
+			dy: diff,
+		};
+
+		const canvas = document.getElementById('canvas');
+		const context = canvas.getContext('2d');
+
+		canvas.width = w;
+		canvas.height = h;
+
+		function drawBall() {
+			context.beginPath();
+			context.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+			context.fillStyle = 'black';
+			context.fill();
+			context.closePath();
+		}
+
+		function draw() {
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			drawBall();
+
+			if (ball.x + ball.dx - ball.r < 0 || ball.x + ball.dx + ball.r > w) {
+				ball.dx = -ball.dx;
+			}
+			if (ball.y + ball.dy - ball.r < 0 || ball.y + ball.dy + ball.r > h) {
+				ball.dy = -ball.dy;
+			}
+
+			ball.x += ball.dx;
+			ball.y += ball.dy;
+
+			requestAnimationFrame(() => draw());
+		}
+		draw();
+	</script>
+</body>
+</html>
